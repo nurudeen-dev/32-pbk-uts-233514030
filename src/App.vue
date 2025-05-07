@@ -41,6 +41,7 @@ const tambahTugas = () => {
 
     <ul>
       <li v-for="tugas in tugas" :key="tugas.id">
+        <input type="checkbox" v-model="tugas.status">
         {{ tugas.nama }} - {{ tugas.status ? 'Sudah Selesai' : 'Belum Selesai' }}
       </li>
     </ul>
