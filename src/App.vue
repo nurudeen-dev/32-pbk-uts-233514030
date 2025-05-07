@@ -5,17 +5,17 @@ const tugas = ref([
   {
     id: 1,
     nama: 'Tugas 1',
-    status:false,
+    status: false,
   },
   {
     id: 2,
     nama: 'Tugas 2',
-    status:false,
+    status: false,
   },
   {
     id: 3,
     nama: 'Tugas 3',
-    status:false,
+    status: false,
   },
 ])
 const newTugas = ref('')
@@ -31,6 +31,10 @@ const tambahTugas = () => {
   }
 }
 
+const hapusTugas = (id) => {
+  tugas.value = tugas.value.filter((tugas) => tugas.id !== id)
+}
+
 </script>
 
 <template>
@@ -43,11 +47,10 @@ const tambahTugas = () => {
       <li v-for="tugas in tugas" :key="tugas.id">
         <input type="checkbox" v-model="tugas.status">
         {{ tugas.nama }} - {{ tugas.status ? 'Sudah Selesai' : 'Belum Selesai' }}
+        <button @click="hapusTugas(tugas.id)">Hapus</button>
       </li>
     </ul>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
