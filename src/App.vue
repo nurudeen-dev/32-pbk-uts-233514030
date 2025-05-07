@@ -1,24 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
-const tugas = ref([
-  {
-    id: 1,
-    nama: 'Tugas 1',
-    status: false,
-  },
-  {
-    id: 2,
-    nama: 'Tugas 2',
-    status: false,
-  },
-  {
-    id: 3,
-    nama: 'Tugas 3',
-    status: false,
-  },
-])
+const tugas = ref([])
 const newTugas = ref('')
+const filterStatus = ref('semua')
 
 const tambahTugas = () => {
   if (newTugas.value) {
@@ -35,6 +20,16 @@ const hapusTugas = (id) => {
   tugas.value = tugas.value.filter((tugas) => tugas.id !== id)
 }
 
+const filterTugas = computed(() => {
+  if (filterStatus.value === 'semua') {
+    return tugas.value
+  } else if (filterStatus.value === 'selesai') {
+    return tugas.value.filter((tugas) => tugas.status)
+  } else {
+    return tugas.value.filter((tugas) => !tugas.status)
+  }
+})
+
 </script>
 
 <template>
@@ -42,9 +37,14 @@ const hapusTugas = (id) => {
 
     <input type="text" v-model="newTugas" @keyup.enter="tambahTugas" placeholder="Tambah Tugas">
     <button @click="tambahTugas">Tambah Tugas</button>
+    <div>
+      <button @click="filterStatus = 'semua'">Semua</button>
+      <button @click="filterStatus = 'selesai'">Selesai</button>
+      <button @click="filterStatus = 'belum selesai'">Belum Selesai</button>
+    </div>
 
     <ul>
-      <li v-for="tugas in tugas" :key="tugas.id">
+      <li v-for="tugas in filterTugas" :key="tugas.id">
         <input type="checkbox" v-model="tugas.status">
         {{ tugas.nama }} - {{ tugas.status ? 'Sudah Selesai' : 'Belum Selesai' }}
         <button @click="hapusTugas(tugas.id)">Hapus</button>
